@@ -2,8 +2,11 @@ import express from "express";
 import users from "./MOCK_DATA (1).json" assert { type: "json" };
 import fs from "fs";
 import connectDB from "./db/conntect.js";
+import dotenv from "dotenv";
+import collection from "./models/collection.js";
+dotenv.config();
 const app = express();
-const port = 6400;
+const port = process.env.PORT || 4015;
 app.use(express.urlencoded({ extended: false }));
 
 // how to send html tang on responce
@@ -15,10 +18,16 @@ app.use(express.urlencoded({ extended: false }));
 //   });
 
 // 1 : GET /users -  get all user data
-connectDB()
+connectDB(process.env.MONGODB_DEV_URI)
   .then(() => {
-    app.get("/users", (req, res) => {
-      return res.json(users);
+    app.get("/users", async (req, res) => {
+      try {
+        const allUser = await collection.find({});
+        return res.json(allUser);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
     });
 
     app.post("/users", (req, res) => {

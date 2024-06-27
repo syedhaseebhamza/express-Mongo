@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
-const uri =
-  "mongodb+srv://syedhaseebhamza333:cFNbv8FnWq1kPr3F@cluster0.1jzc8po.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0";
-
-const connectDB = async () => {
+const connectDB = async (uri) => {
   try {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
@@ -17,3 +14,4 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+// in this file i connect the dataBase to our app 
